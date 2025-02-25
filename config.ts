@@ -14,7 +14,7 @@ import {
   zkSync,
   bscTestnet
 } from 'wagmi/chains';
-import { coinbaseWallet, metaMask, walletConnect } from 'wagmi/connectors';
+// import { coinbaseWallet, metaMask, walletConnect } from 'wagmi/connectors';
 
 export const config = createConfig({
   chains: [
@@ -31,14 +31,6 @@ export const config = createConfig({
     aurora,
     klaytn,
     bscTestnet
-  ],
-  connectors: [
-    metaMask(),
-    coinbaseWallet({ appName: 'Agora Hive' }),
-    walletConnect({
-      projectId: '3c5963e1c1ce8832d052590ad284aeb6',
-      showQrModal: true,
-    }),
   ],
   ssr: true,
   storage: createStorage({

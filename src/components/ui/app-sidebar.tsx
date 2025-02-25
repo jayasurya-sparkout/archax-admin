@@ -2,6 +2,7 @@
 
 import { Users, Calendar, FolderClosed } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -40,6 +41,9 @@ type props = {
 }
 
 export const AppSidebar = ({classname} : props) => {
+  
+  const pathname = usePathname();
+
   return (
     <Sidebar className={`${classname}`}>
       <SidebarContent className="text-white h-screen border-r-1 border-white-500" style={{ backgroundColor: "#1f2937", color: "white", height: "100vh" }}>
@@ -49,16 +53,24 @@ export const AppSidebar = ({classname} : props) => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title} className="">
-                  <SidebarMenuButton asChild>
-                    <Link href={item.path} className="py-2 opacity-50 hover:opacity-100 transition-opacity duration-200" style={{ padding: "20px 14px" }} >
-                      <item.icon style={{ width: "23px", height: "23px" }}  />
-                      <span className="text-base pl-1">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+            {items.map((item) => {
+                const isActive = pathname === item.path;
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        href={item.path}
+                        className={`py-2 transition-opacity duration-200 flex items-center gap-2 px-4 hover:bg-[#374151] hover:text-white
+                          ${isActive ? "bg-[#111827] text-white font-semibold" : "opacity-50 hover:opacity-100"}`}
+                      >
+                        <item.icon className="w-6 h-6" />
+                        <span className="text-base">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
