@@ -265,22 +265,39 @@ const SidebarTrigger = React.forwardRef<
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
 
+  // Custom Hooks 
+  const [isVisible, setIsVisible] = useState(false);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsVisible(window.innerWidth < 768);
+      };
+  
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
   return (
-    <Button
-      ref={ref}
-      data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("h-7 w-7", className)}
-      onClick={(event) => {
-        onClick?.(event)
-        toggleSidebar()
-      }}
-      {...props}
-    >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    <div className="">
+      {isVisible && (
+        <Button
+        ref={ref}
+        data-sidebar="trigger"
+        variant="ghost"
+        size="icon"
+        className={cn("h-7 w-7", className)}
+        onClick={(event) => {
+          onClick?.(event)
+          toggleSidebar()
+        }}
+        {...props}
+      >
+        <PanelLeft />
+        <span className="sr-only">Toggle Sidebar</span>
+      </Button>
+      )}
+    </div>
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"
@@ -761,3 +778,5 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+const { useState, useEffect } = React;
+
